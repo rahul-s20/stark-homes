@@ -1,0 +1,3 @@
+-- CREATE USER docker;
+CREATE DATABASE data_db;
+GRANT ALL PRIVILEGES ON DATABASE data_db TO postgres;

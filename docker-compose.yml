@@ -1,0 +1,29 @@
+version: "3"
+services:
+  db:
+      image: postgres
+      restart: always
+      volumes:
+        - ./data/db:/var/lib/postgresql/data
+        - ./sql_queries/01-init.sql:/docker-entrypoint-initdb.d/01-init.sql
+      environment:
+        - POSTGRES_DB=postgres
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=123456789
+      ports:
+        - 5433:5432 
+      container_name: postgres_db
+  app:
+    build: .
+    volumes:
+      - .:/django
+    ports:
+      - 8000:8000
+    image: rsarkar20/stark-homes:latest
+    container_name: stark-homes
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - db   
+# volumes:
+#   data-db:   
+    
